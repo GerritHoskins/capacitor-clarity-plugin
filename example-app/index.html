@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Clarity plugin playground</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">CAPACITOR 8 / MICROSOFT CLARITY</p>
+      <h1>Clarity playground</h1>
+      <p id="platform"></p>
+      <p>
+        Uses real Clarity data only after you enter your project ID and select Initialize. iOS integration is
+        experimental. Use synthetic identifiers in this playground.
+      </p>
+      <section aria-labelledby="setup-heading">
+        <h2 id="setup-heading">Connect</h2>
+        <label>Project ID <input id="project-id" autocomplete="off" placeholder="Your Clarity project ID" /></label>
+        <label
+          >Native log level
+          <select id="log-level">
+            <option>verbose</option>
+            <option>debug</option>
+            <option>info</option>
+            <option>warning</option>
+            <option>error</option>
+            <option>none</option>
+          </select></label
+        >
+        <div class="actions">
+          <button data-action="initialize">Initialize</button><button data-action="listen">Listen for sessions</button
+          ><button data-action="remove-listeners">Remove listeners</button>
+        </div>
+      </section>
+      <section aria-labelledby="session-heading">
+        <h2 id="session-heading">Session &amp; capture</h2>
+        <div class="actions">
+          <button data-action="url">Get session URL</button><button data-action="new-session">Start new session</button
+          ><button data-action="pause">Pause</button><button data-action="resume">Resume</button
+          ><button data-action="paused">Is paused?</button>
+        </div>
+      </section>
+      <section aria-labelledby="data-heading">
+        <h2 id="data-heading">Identify &amp; annotate</h2>
+        <label>Custom user ID <input id="user-id" value="demo-user" /></label>
+        <button data-action="user">Set user ID</button>
+        <label>Custom session ID <input id="session-id" value="demo-session" /></label>
+        <button data-action="session">Set session ID</button>
+        <label>Tag key <input id="tag-key" value="demo" /></label>
+        <label>Tag values (comma separated) <input id="tag-values" value="playground, capacitor" /></label>
+        <button data-action="tag">Set tag</button>
+        <label>Event name <input id="event-name" value="playground_click" /></label>
+        <button data-action="event">Send event</button>
+        <label>Screen name <input id="screen-name" value="Playground" /></label>
+        <div class="actions">
+          <button data-action="screen">Set screen</button><button data-action="reset-screen">Reset screen</button>
+        </div>
+      </section>
+      <section aria-labelledby="consent-heading">
+        <h2 id="consent-heading">Storage choices</h2>
+        <p>
+          This demo forwards your selections. Initialization can start capture before this call. Configure the project's
+          consent requirements before testing with personal data.
+        </p>
+        <label class="check"><input type="checkbox" id="analytics" /> Analytics storage</label>
+        <label class="check"><input type="checkbox" id="ads" /> Ads storage (ignored on iOS)</label>
+        <button data-action="consent">Apply consent</button>
+      </section>
+      <section aria-labelledby="log-heading">
+        <div class="log-title">
+          <h2 id="log-heading">Activity</h2>
+          <button id="clear">Clear log</button>
+        </div>
+        <pre id="log" role="log" aria-live="polite"></pre>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

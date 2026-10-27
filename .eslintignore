@@ -1,0 +1,5 @@
+build
+dist
+
+example-app/android/
+example-app/ios/

@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  font-family: system-ui, sans-serif;
+  color: #e8edf5;
+  background: #111821;
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+}
+main {
+  max-width: 860px;
+  margin: auto;
+}
+.eyebrow {
+  color: #80dbd5;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+}
+h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin: 12px 0;
+}
+h2 {
+  font-size: 1.1rem;
+}
+p {
+  color: #b5c4d3;
+  line-height: 1.6;
+}
+section {
+  background: #1a2532;
+  border: 1px solid #314154;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 18px 0;
+}
+label {
+  display: block;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+input:not([type='checkbox']),
+select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #60718a;
+  border-radius: 6px;
+  background: #111821;
+  color: inherit;
+}
+button {
+  padding: 10px 14px;
+  border: 1px solid #539a97;
+  border-radius: 6px;
+  background: #204c50;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #a8ffdf;
+  outline-offset: 3px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.check {
+  display: flex;
+  gap: 10px;
+}
+.log-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  min-height: 140px;
+  max-height: 400px;
+  overflow: auto;
+}
