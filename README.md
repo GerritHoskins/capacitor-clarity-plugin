@@ -15,7 +15,9 @@ npx cap sync
 
 For local development, build the plugin first, then install it by path (the
 included example uses `file:..`). See [RELEASING.md](https://github.com/gerrithoskins/capacitor-clarity-plugin/blob/main/RELEASING.md)
-for npm publishing and installation from a GitHub release tag.
+for npmjs/GitHub Packages publishing and installation from a GitHub release tag.
+For GitHub Packages, map the @gerrithoskins scope to https://npm.pkg.github.com
+in the consuming project and authenticate with read:packages access before installing.
 
 | Platform | Implementation | Limitations |
 | --- | --- | --- |

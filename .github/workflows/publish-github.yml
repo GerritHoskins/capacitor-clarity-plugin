@@ -1,0 +1,50 @@
+name: Publish GitHub package
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Verify version tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node -e "const p=require('./package.json'); if(process.env.RELEASE_TAG!=='v'+p.version) throw new Error('Run this workflow against the v'+p.version+' tag');"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://npm.pkg.github.com
+          scope: '@gerrithoskins'
+          cache: npm
+      - run: npm ci
+      - name: Select GitHub Packages for this build
+        run: npm pkg set publishConfig.registry=https://npm.pkg.github.com
+      - name: Publish package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify published version and install it
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          npm view "@gerrithoskins/capacitor-clarity-plugin@$VERSION" version dist.integrity --registry=https://npm.pkg.github.com
+          npm install --prefix "$RUNNER_TEMP/clarity-package-consumer" --ignore-scripts --no-audit --no-fund "@gerrithoskins/capacitor-clarity-plugin@$VERSION"
+          node -e "const {createRequire}=require('node:module');const path=require('node:path');const load=createRequire(path.join(process.env.RUNNER_TEMP,'clarity-package-consumer','consumer.cjs'));if(typeof load('@gerrithoskins/capacitor-clarity-plugin').Clarity.initialize!=='function')throw new Error('Published package import failed');"

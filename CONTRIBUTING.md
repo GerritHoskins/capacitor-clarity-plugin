@@ -44,4 +44,5 @@ This template is integrated with ESLint, Prettier, and SwiftLint. Using these to
 ## Publishing
 
 See [RELEASING.md](RELEASING.md) for local package checks, GitHub source/tag setup
-and npm publication. CI performs validation only; it does not publish.
+and npm publication. Version tags run CI before publishing to GitHub Packages;
+npmjs publication remains separate.

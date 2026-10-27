@@ -5,17 +5,25 @@ import { readFileSync } from 'node:fs';
 const metadata = JSON.parse(readFileSync('package.json', 'utf8'));
 assert.equal(metadata.name, '@gerrithoskins/capacitor-clarity-plugin');
 assert.equal(metadata.publishConfig?.access, 'public');
-assert.equal(metadata.publishConfig?.registry, 'https://registry.npmjs.org/');
+assert.ok(
+  ['https://registry.npmjs.org/', 'https://npm.pkg.github.com'].includes(metadata.publishConfig?.registry),
+  'Unexpected publication registry.',
+);
 assert.notEqual(metadata.private, true);
 
 const npmCli = process.env.npm_execpath;
 assert.ok(npmCli, 'Run this check through npm run verify:package.');
-const [packed] = JSON.parse(
-  execFileSync(process.execPath, [npmCli, 'pack', '--dry-run', '--ignore-scripts', '--json', '--offline'], {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'inherit'],
-  }),
+// npm 10 may run prepare and prepend its stdout even with --ignore-scripts.
+const output = execFileSync(
+  process.execPath,
+  [npmCli, 'pack', '--dry-run', '--ignore-scripts', '--json', '--offline'],
+  { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] },
 );
+const manifestStart = output.search(/\[\s*\{\s*"id"\s*:/);
+assert.ok(manifestStart >= 0, 'npm pack did not return a JSON manifest.');
+const [packed] = JSON.parse(output.slice(manifestStart));
+assert.equal(packed.name, metadata.name);
+assert.equal(packed.version, metadata.version);
 const names = new Set(packed.files.map(({ path }) => path));
 for (const required of [
   'package.json',

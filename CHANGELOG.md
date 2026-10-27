@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.1 — unreleased
+## 0.0.1 — 2026-10-27
 
 Initial Capacitor 8 integration for Microsoft Clarity:
 
@@ -11,5 +11,4 @@ Initial Capacitor 8 integration for Microsoft Clarity:
 - Interactive example app with generated Android and iOS projects.
 
 Android capture and successful uploads were verified on an API 36 emulator.
-iOS compilation and replay remain unverified. This file does not imply an npm or
-GitHub release has been published.
+iOS compilation and replay remain unverified.

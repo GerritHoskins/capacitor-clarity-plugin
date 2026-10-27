@@ -12,12 +12,13 @@ experimental status visible in release notes and the README.
 The prepared version is 0.0.1. The source repository is
 https://github.com/GerritHoskins/capacitor-clarity-plugin, configured as origin.
 Publishing an npm version, creating a release tag and creating a GitHub release
-are separate steps; CI performs validation only.
+are separate steps. CI validates changes; the GitHub Packages publishing workflow
+runs for v-prefixed tags after CI passes.
 
 Android builds and live SDK uploads have been verified locally. iOS compilation,
 SwiftLint, CocoaPods installation and replay remain unverified; 0.0.1 must describe
 iOS as experimental. GitHub CI validates web/package behavior on Node 22 and 24
-and builds the Android library. The workflow itself needs its first GitHub run.
+and builds the Android library.
 
 ## Local release checks
 
@@ -100,7 +101,8 @@ checks pass:
 npm publish --access public
 ```
 
-The public npm registry and public access are set in publishConfig. The
+The public npm registry and public access are the default publishConfig settings.
+The GitHub Packages workflow overrides the registry only in its runner checkout. The
 prepublishOnly hook runs tests, lint and package-content checks; prepare rebuilds
 the package before upload. npm may request authentication or an OTP.
 No npm token is stored in the repository.
@@ -115,10 +117,40 @@ For later versions, update package.json, both lockfiles' parent-package metadata
 the changelog and the release tag together. npm versions are immutable; publish a
 new version rather than trying to replace an existing release.
 
-## Optional future GitHub publishing automation
+## GitHub Packages
 
-CI currently performs validation only. If publishing from GitHub Actions is
-desired later, configure npm trusted publishing for this repository and a
-dedicated publish workflow, following
-[the npm documentation](https://docs.npmjs.com/trusted-publishers/). This repository
-does not contain an automatically triggered publication workflow.
+Push a reviewed v-prefixed version tag, such as v0.0.1. The
+Publish GitHub package workflow first runs the reusable CI checks, then publishes
+the matching package version to https://npm.pkg.github.com using the repository's
+GITHUB_TOKEN with packages:write permission. It verifies the registry version and
+installs the published package into a clean consumer. It does not publish to npmjs.
+
+The source checkout keeps npmjs as its default publication registry. Only the
+publishing runner changes publishConfig.registry to GitHub Packages, so the same
+source version can be released to both registries independently.
+
+To install from GitHub Packages, configure the consuming project's .npmrc:
+
+```ini
+@gerrithoskins:registry=https://npm.pkg.github.com
+```
+
+Authenticate to GitHub Packages with an account/token that has read:packages
+access, then install:
+
+```sh
+npm install @gerrithoskins/capacitor-clarity-plugin@0.0.1
+npx cap sync
+```
+
+GitHub requires authentication to install packages even when their visibility is
+public. Newly published packages may initially be private; inspect the package's
+visibility in GitHub before describing it as publicly accessible.
+
+See [GitHub's npm registry documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry).
+
+## Future npmjs publishing automation
+
+The current publish workflow targets GitHub Packages only. For npmjs automation,
+configure npm trusted publishing and a separate workflow following
+[the npm documentation](https://docs.npmjs.com/trusted-publishers/).
