@@ -1,6 +1,8 @@
 # @gerrithoskins/capacitor-clarity-plugin
 
-Typed Microsoft Clarity integration for Capacitor 8. Implements the session,
+Microsoft Clarity session replay and analytics for Capacitor 8, with typed Android, iOS and web APIs.
+
+iOS support is experimental. Implements the session,
 identity, tag, event, screen, capture and consent API listed below. Native view
 masking and the deprecated current-session-ID API are outside this plugin's API.
 
@@ -11,8 +13,9 @@ npm install @gerrithoskins/capacitor-clarity-plugin
 npx cap sync
 ```
 
-This is a local, unpublished package. For local development, build the plugin
-first, then install it by path (the included example uses `file:..`).
+For local development, build the plugin first, then install it by path (the
+included example uses `file:..`). See [RELEASING.md](https://github.com/gerrithoskins/capacitor-clarity-plugin/blob/main/RELEASING.md)
+for npm publishing and installation from a GitHub release tag.
 
 | Platform | Implementation | Limitations |
 | --- | --- | --- |

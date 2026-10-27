@@ -1,7 +1,7 @@
 {
   "name": "@gerrithoskins/capacitor-clarity-plugin",
   "version": "0.0.1",
-  "description": "Typed Microsoft Clarity integration for Capacitor 8 on Android, iOS and web",
+  "description": "Microsoft Clarity session replay and analytics for Capacitor 8, with typed Android, iOS and web APIs.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -12,7 +12,8 @@
     "dist/",
     "ios/Sources",
     "Package.swift",
-    "GerrithoskinsCapacitorClarityPlugin.podspec"
+    "GerrithoskinsCapacitorClarityPlugin.podspec",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "author": "Gerrit Hoskins <gerrit.hoskins@gmail.com>",
   "license": "MIT",
@@ -45,8 +46,10 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build",
-    "test": "npm run build && node --test tests/*.test.cjs"
+    "prepublishOnly": "npm test && npm run lint && node scripts/check-package.mjs",
+    "test": "npm run build && node --test tests/*.test.cjs",
+    "prepare": "npm run build",
+    "verify:package": "npm run build && node scripts/check-package.mjs"
   },
   "devDependencies": {
     "@capacitor/android": "^8.5.3",
@@ -83,5 +86,10 @@
   },
   "dependencies": {
     "@microsoft/clarity": "1.0.2"
+  },
+  "homepage": "https://github.com/gerrithoskins/capacitor-clarity-plugin#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
